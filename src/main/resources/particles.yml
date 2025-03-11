@@ -1,0 +1,3 @@
+myCustomParticle:
+  type: FIREWORKS_SPARK
+  count: 10

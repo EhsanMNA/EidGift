@@ -1,16 +1,58 @@
-item1:
-  name: "Gift to %name%"
-  material: STONE
-  custommodeldata: 2
-  lore:
-    - "Eid mobarak %name%"
-  enchantments:
-    durability: 3
-  itemflags:
-    - HIDE_ENCHANTS
-    - HIDE_ATTRIBUTES
+notification:
+  type: TITLE
+  message: "&aYou have a new gift!"
 
-skullitem:
-  name: "Special %name% Head"
-  material: PLAYER_HEAD
-  skulltexture: "texture_url_here"
+gifts:
+  item1:
+    name: "Gift to %name%"
+    material: STONE
+    wrapped: true
+    wrapping-item: wrappedA
+    category: common
+    sound: ENTITY_FIREWORK_ROCKET_LAUNCH
+    particle: myCustomParticle
+    cost: 50.0
+    expiration: 24
+    rarity: rare
+    loot:
+      - "DIAMOND, 0.1"
+      - "STONE, 0.9"
+    wrap-animation:
+      particle: VILLAGER_HAPPY
+      sound: BLOCK_ANVIL_USE
+    unwrap-animation:
+      particle: EXPLOSION_NORMAL
+      sound: ENTITY_FIREWORK_ROCKET_BLAST
+    lore:
+      - "Eid mobarak %name%"
+      - "Category: %category%"
+    active-dates:
+      start: "2025-03-01T00:00:00"
+      end: "2025-03-15T23:59:59"
+
+  bundle1:
+    name: "Eid Bundle for %name%"
+    material: CHEST
+    wrapped: true
+    wrapping-item: wrappedA
+    bundle:
+      - item1
+      - item2
+
+wrappers:
+  wrappedA:
+    name: "Wrapped Gift"
+    material: CHEST
+    lore:
+      - "Right click to unwrap"
+
+recipes:
+  gift_crafter:
+    result: item1
+    shape:
+      - " S "
+      - "SGS"
+      - " S "
+    ingredients:
+      S: STONE
+      G: GOLD_INGOT

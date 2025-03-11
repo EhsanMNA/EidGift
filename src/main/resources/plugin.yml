@@ -2,11 +2,16 @@ name: EidGift
 version: '${project.version}'
 main: me.ehsanmna.eidGift.EidGift
 api-version: 1.13
+soft-depend: [Vault]
 commands:
   givekado:
-    description: Give an Eid gift to a player
-    usage: /<command> <playername> <giftname>
+    description: Give an Eid gift or reload the plugin
+    usage: /<command> <playername> <giftname> or /<command> reload
     permission: eidgift.givekado
+  claimkado:
+    description: Claim your queued gifts
+    usage: /<command>
+    permission: eidgift.claim
 permissions:
   eidgift.givekado:
     description: Allows use of the /givekado command
@@ -14,3 +19,6 @@ permissions:
   eidgift.reload:
     description: Allows reloading the plugin configuration
     default: op
+  eidgift.claim:
+    description: Allows claiming gifts with /claimkado
+    default: true
