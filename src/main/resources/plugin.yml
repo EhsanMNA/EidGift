@@ -6,3 +6,11 @@ commands:
   givekado:
     description: Give an Eid gift to a player
     usage: /<command> <playername> <giftname>
+    permission: eidgift.givekado
+permissions:
+  eidgift.givekado:
+    description: Allows use of the /givekado command
+    default: op
+  eidgift.reload:
+    description: Allows reloading the plugin configuration
+    default: op

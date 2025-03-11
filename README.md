@@ -24,6 +24,8 @@ EidGift is a Spigot plugin that allows server administrators to create custom gi
 ## Commands
 - `/givekado <playername> <giftname>` - Gives the specified gift to a player
   - Example: `/givekado Steve item1`
+- `/givekado reload` - Reloads the plugin configuration from config.yml
+  - Example: `/givekado reload`
 
 ## Configuration
 Default config.yml:
@@ -56,8 +58,18 @@ skullitem:
 - `skulltexture`: Base64 texture value for player heads (only for PLAYER_HEAD material)
 
 ## Permissions
-Currently, the plugin doesn't implement specific permissions. The command is available to all players by default.
+- `eidgift.givekado`
+  - Description: Allows use of the /givekado command to give gifts
+  - Default: op (only operators have access by default)
+- `eidgift.reload`
+  - Description: Allows use of the /givekado reload command
+  - Default: op (only operators have access by default)
 
+To grant permissions using a plugin like LuckPerms:
+```bash
+/lp user <playername> permission set eidgift.givekado true
+/lp user <playername> permission set eidgift.reload true
+```
 ## Requirements
 - Spigot/Paper 1.13 or higher
 - Java 8 or higher

@@ -7,6 +7,7 @@ import org.bukkit.inventory.ItemFlag;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class GiftManager {
@@ -21,6 +22,7 @@ public class GiftManager {
         ConfigurationSection config = plugin.getConfig().getConfigurationSection("");
         if (config == null) return;
 
+        gifts.clear(); // Clear existing gifts before loading
         for (String key : config.getKeys(false)) {
             ConfigurationSection itemSection = config.getConfigurationSection(key);
 
@@ -33,7 +35,6 @@ public class GiftManager {
             gift.setCustomModelData(itemSection.getInt("custommodeldata", 0));
             gift.setLore(itemSection.getStringList("lore"));
 
-            // Load enchantments
             ConfigurationSection enchants = itemSection.getConfigurationSection("enchantments");
             if (enchants != null) {
                 Map<Enchantment, Integer> enchantMap = new HashMap<>();
@@ -44,7 +45,6 @@ public class GiftManager {
                 gift.setEnchantments(enchantMap);
             }
 
-            // Load item flags
             if (itemSection.contains("itemflags")) {
                 List<ItemFlag> flags = itemSection.getStringList("itemflags").stream()
                         .map(flag -> ItemFlag.valueOf(flag.toUpperCase()))
@@ -52,14 +52,23 @@ public class GiftManager {
                 gift.setItemFlags(flags);
             }
 
-            // Load skull texture
             gift.setSkullTexture(itemSection.getString("skulltexture"));
 
             gifts.put(key.toLowerCase(), gift);
         }
     }
 
+    public void reloadGifts() {
+        plugin.reloadConfig(); // Reload the config file
+        loadGifts(); // Reload gifts from the updated config
+    }
+
     public GiftItem getGift(String id) {
         return gifts.get(id.toLowerCase());
+    }
+
+    // New method to get all gift IDs
+    public Set<String> getGiftIds() {
+        return gifts.keySet();
     }
 }

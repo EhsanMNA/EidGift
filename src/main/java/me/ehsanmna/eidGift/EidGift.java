@@ -15,7 +15,9 @@ public class EidGift extends JavaPlugin {
         giftManager.loadGifts();
 
         // Register command
-        getCommand("givekado").setExecutor(new GiveKadoCommand(giftManager));
+        GiveKadoCommand command = new GiveKadoCommand(giftManager);
+        getCommand("givekado").setExecutor(command);
+        getCommand("givekado").setTabCompleter(command);
 
         getLogger().info("EidGift plugin enabled!");
     }
