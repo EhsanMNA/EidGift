@@ -1,13 +1,18 @@
 package me.ehsanmna.eidGift;
 
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class GiftItem {
@@ -120,13 +125,25 @@ public class GiftItem {
             itemFlags.forEach(meta::addItemFlags);
         }
 
-        // Handle skull texture
-        if (skullTexture != null && meta instanceof SkullMeta) {
-            SkullMeta skullMeta = (SkullMeta) meta;
-            // Implement skull texture setting logic here
+        // Handle skull texture (only for PLAYER_HEAD)
+        if (material == Material.PLAYER_HEAD && skullTexture != null && meta instanceof SkullMeta skullMeta) {
+            applySkullTexture(skullMeta, skullTexture);
         }
 
         item.setItemMeta(meta);
         return item;
+    }
+
+    private void applySkullTexture(SkullMeta skullMeta, String texture) {
+        try {
+            GameProfile profile = new GameProfile(UUID.randomUUID(), null);
+            profile.getProperties().put("textures", new Property("textures", texture));
+
+            Field profileField = skullMeta.getClass().getDeclaredField("profile");
+            profileField.setAccessible(true);
+            profileField.set(skullMeta, profile);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 }
