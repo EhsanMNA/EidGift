@@ -1,0 +1,8 @@
+name: EidGift
+version: '${project.version}'
+main: me.ehsanmna.eidGift.EidGift
+api-version: 1.13
+commands:
+  givekado:
+    description: Give an Eid gift to a player
+    usage: /<command> <playername> <giftname>

@@ -1,0 +1,16 @@
+item1:
+  name: "Gift to %name%"
+  material: STONE
+  custommodeldata: 2
+  lore:
+    - "Eid mobarak %name%"
+  enchantments:
+    durability: 3
+  itemflags:
+    - HIDE_ENCHANTS
+    - HIDE_ATTRIBUTES
+
+skullitem:
+  name: "Special %name% Head"
+  material: PLAYER_HEAD
+  skulltexture: "texture_url_here"
