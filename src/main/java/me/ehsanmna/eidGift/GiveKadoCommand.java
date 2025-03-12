@@ -36,12 +36,6 @@ public class GiveKadoCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        // Main give command logic
-        if (!(sender instanceof Player player)) {
-            sender.sendMessage("§cThis command can only be used by players!");
-            return true;
-        }
-
         if (args.length != 2) {
             sender.sendMessage("§cUsage: /givekado <playername> <giftname> or /givekado reload");
             return true;
@@ -64,7 +58,7 @@ public class GiveKadoCommand implements CommandExecutor, TabCompleter {
 
         target.getInventory().addItem(gift.createItem(targetName));
         sender.sendMessage("§aGave " + giftId + " to " + targetName + "!");
-        target.sendMessage("§aYou received a gift from " + player.getName() + "!");
+        target.sendMessage("§aYou received a gift from " + sender.getName() + "!");
         return true;
     }
 

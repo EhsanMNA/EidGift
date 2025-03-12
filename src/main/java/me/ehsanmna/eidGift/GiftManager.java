@@ -1,5 +1,6 @@
 package me.ehsanmna.eidGift;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
@@ -23,12 +24,12 @@ public class GiftManager {
         if (config == null) return;
 
         gifts.clear(); // Clear existing gifts before loading
-        for (String key : config.getKeys(false)) {
+        for (String key : config.getConfigurationSection("items").getKeys(false)) {
             ConfigurationSection itemSection = config.getConfigurationSection(key);
 
             GiftItem gift = new GiftItem(
                     key,
-                    itemSection.getString("name"),
+                    colorize(itemSection.getString("name")),
                     Material.valueOf(itemSection.getString("material").toUpperCase())
             );
 
@@ -70,5 +71,9 @@ public class GiftManager {
     // New method to get all gift IDs
     public Set<String> getGiftIds() {
         return gifts.keySet();
+    }
+
+    public static String colorize(String msg){
+        return ChatColor.translateAlternateColorCodes('&',msg);
     }
 }

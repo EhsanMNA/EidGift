@@ -1,5 +1,8 @@
 package me.ehsanmna.eidGift;
 
+import com.github.eloyzone.jalalicalendar.DateConverter;
+import com.github.eloyzone.jalalicalendar.JalaliDate;
+import com.github.eloyzone.jalalicalendar.JalaliDateFormatter;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import org.bukkit.Material;
@@ -10,6 +13,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import java.lang.reflect.Field;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -100,35 +104,32 @@ public class GiftItem {
         ItemMeta meta = item.getItemMeta();
 
         // Set name with player placeholder
-        meta.setDisplayName(name.replace("%name%", playerName));
+        meta.setDisplayName(GiftManager.colorize(name.replace("%name%", playerName)));
+
+        DateConverter dateConverter = new DateConverter();
+        LocalDate today = LocalDate.now();
+        JalaliDate jalaliDate = dateConverter.gregorianToJalali(today.getYear(),today.getMonth(),today.getDayOfMonth());
+        String result = jalaliDate.format(new JalaliDateFormatter("yyyy/mm/dd", JalaliDateFormatter.FORMAT_IN_PERSIAN));
 
         // Set lore with player placeholder
         if (lore != null) {
             List<String> formattedLore = lore.stream()
-                    .map(line -> line.replace("%name%", playerName))
+                    .map(line -> GiftManager.colorize(line.replace("%name%", playerName).replace("%date%", result)))
                     .collect(Collectors.toList());
             meta.setLore(formattedLore);
         }
 
         // Set custom model data
-        if (customModelData != null) {
-            meta.setCustomModelData(customModelData);
-        }
+        if (customModelData != null) meta.setCustomModelData(customModelData);
 
         // Add enchantments
-        if (enchantments != null) {
-            enchantments.forEach((ench, level) -> meta.addEnchant(ench, level, true));
-        }
+        if (enchantments != null) enchantments.forEach((ench, level) -> meta.addEnchant(ench, level, true));
 
         // Add item flags
-        if (itemFlags != null) {
-            itemFlags.forEach(meta::addItemFlags);
-        }
+        if (itemFlags != null) itemFlags.forEach(meta::addItemFlags);
 
         // Handle skull texture (only for PLAYER_HEAD)
-        if (material == Material.PLAYER_HEAD && skullTexture != null && meta instanceof SkullMeta skullMeta) {
-            applySkullTexture(skullMeta, skullTexture);
-        }
+        if (material == Material.PLAYER_HEAD && skullTexture != null && meta instanceof SkullMeta skullMeta) applySkullTexture(skullMeta, skullTexture);
 
         item.setItemMeta(meta);
         return item;
