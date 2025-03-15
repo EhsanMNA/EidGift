@@ -20,12 +20,16 @@ public class GiftManager {
     }
 
     public void loadGifts() {
-        ConfigurationSection config = plugin.getConfig().getConfigurationSection("");
+        ConfigurationSection config = plugin.getConfig().getConfigurationSection("items");
         if (config == null) return;
 
         gifts.clear(); // Clear existing gifts before loading
-        for (String key : config.getConfigurationSection("items").getKeys(false)) {
+        for (String key : config.getKeys(false)) {
             ConfigurationSection itemSection = config.getConfigurationSection(key);
+            if (itemSection == null){
+                plugin.getLogger().warning("Cloud not load "+key+" item !");
+                continue;
+            }
 
             GiftItem gift = new GiftItem(
                     key,
